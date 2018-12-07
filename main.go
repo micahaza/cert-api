@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/micahaza/cert-api/database"
+	"github.com/micahaza/cert-api/app"
 )
 
 func main() {
