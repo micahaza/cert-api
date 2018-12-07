@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	cdb := database.NewCertsDB()
-	cert := database.Certificate{
+	cdb := app.NewCertsDB()
+	cert := app.Certificate{
 		ID:        "001",
 		Title:     "title",
 		CreatedAt: time.Now(),
@@ -25,7 +25,7 @@ func main() {
 	}
 	fmt.Println(cert)
 
-	upd := database.Certificate{
+	upd := app.Certificate{
 		ID:        "00",
 		Title:     "Changed title",
 		CreatedAt: time.Now(),
