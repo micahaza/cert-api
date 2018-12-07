@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/micahaza/cert-api/app"
+	"github.com/micahaza/cert-api/app/database"
+	"github.com/micahaza/cert-api/app/rest"
 )
 
 func main() {
-	cdb := app.NewCertsDB()
-	cert := app.Certificate{
+	cdb := database.NewCertsDB()
+	cert := database.Certificate{
 		ID:        "001",
 		Title:     "title",
 		CreatedAt: time.Now(),
@@ -25,8 +26,8 @@ func main() {
 	}
 	fmt.Println(cert)
 
-	upd := app.Certificate{
-		ID:        "00",
+	upd := database.Certificate{
+		ID:        "002",
 		Title:     "Changed title",
 		CreatedAt: time.Now(),
 		Owner:     "user1",
@@ -42,4 +43,8 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println("updated", cert)
+
+	d := rest.NewServer()
+	d.Routes()
+	fmt.Println(d)
 }

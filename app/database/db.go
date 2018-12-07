@@ -1,4 +1,4 @@
-package app
+package database
 
 import (
 	"errors"
@@ -50,6 +50,10 @@ func NewCertsDB() *CertsDB {
 	}
 }
 
+/*
+Certificate specific functions
+*/
+
 // Cert returns one cert if exists
 func (db *CertsDB) Cert(id string) (Certificate, error) {
 	db.mu.Lock()
@@ -61,7 +65,7 @@ func (db *CertsDB) Cert(id string) (Certificate, error) {
 	return c, nil
 }
 
-// AddCert adds a certificate, returns error if cert is already exists
+// AddCert adds a certificate, returns error if cert already exists
 func (db *CertsDB) AddCert(crt Certificate) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
@@ -83,4 +87,30 @@ func (db *CertsDB) UpdateCert(crt Certificate) (Certificate, error) {
 	db.certificates[crt.ID] = crt
 
 	return db.certificates[crt.ID], nil
+}
+
+/*
+User specific functions
+*/
+
+// User returns one cert if exists
+func (db *CertsDB) User(id string) (User, error) {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+	c, ok := db.users[id]
+	if !ok {
+		return User{}, errors.New("Can't find user")
+	}
+	return c, nil
+}
+
+// AddUser adds an user, returns error if user already exists
+func (db *CertsDB) AddUser(crt Certificate) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+	if _, ok := db.certificates[crt.ID]; ok {
+		return errors.New("User is already exists")
+	}
+	db.certificates[crt.ID] = crt
+	return nil
 }
