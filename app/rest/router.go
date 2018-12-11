@@ -27,10 +27,8 @@ func (s *Server) handleCertificate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "GET": // list all certificates
-			allCerts = s.db.AllCerts()
-			console.log(allCerts)
-			slcD := []string{"apple", "peach", "pear"}
-			json.NewEncoder(w).Encode(slcD)
+			allCerts, _ := s.db.AllCerts()
+			json.NewEncoder(w).Encode(allCerts)
 		case "POST": // create new certificate
 			fmt.Println("POST ...")
 		default:
