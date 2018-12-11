@@ -65,11 +65,11 @@ func (s *Server) acceptCertificateTransfer() http.HandlerFunc {
 
 // Routes ...
 func (s *Server) Routes() {
-	s.router.HandleFunc("/certificates/", s.getAllCertificates())            //.Methods("GET")
-	s.router.HandleFunc("/certificates/", s.createCertificate())             // .Methods("POST")
+	s.router.HandleFunc("/certificates/", s.getAllCertificates()) //.Methods("GET")
+	// s.router.HandleFunc("/certificates/", s.createCertificate())             // .Methods("POST")
 	s.router.HandleFunc("/users/{id}/certificates", s.getUserCertificates()) //.Methods("GET")
-	s.router.HandleFunc("/certificates/{id}", s.deleteCertificate())         //.Methods("DELETE")
-	s.router.HandleFunc("/certificates/{id}", s.updateCertificate())         //.Methods("PUT")
-	s.router.HandleFunc("/certificates/", s.transferCertificate())           //.Methods("POST")
-	s.router.HandleFunc("/certificates/", s.acceptCertificateTransfer())     //.Methods("PUT")
+	// s.router.HandleFunc("/certificates/{id}", s.deleteCertificate())         //.Methods("DELETE")
+	s.router.HandleFunc("/certificates/{id}", s.updateCertificate()) //.Methods("PUT")
+	// s.router.HandleFunc("/certificates/", s.transferCertificate())       //.Methods("POST")
+	// s.router.HandleFunc("/certificates/", s.acceptCertificateTransfer()) //.Methods("PUT")
 }
