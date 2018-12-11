@@ -54,6 +54,13 @@ func NewCertsDB() *CertsDB {
 Certificate specific functions
 */
 
+// AllCerts returns one cert if exists
+func (db *CertsDB) AllCerts() (map[string]Certificate, error) {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+	return db.certificates, nil
+}
+
 // Cert returns one cert if exists
 func (db *CertsDB) Cert(id string) (Certificate, error) {
 	db.mu.Lock()
