@@ -11,7 +11,7 @@ import (
 // Server ...
 type Server struct {
 	DB     *database.CertsDB
-	Router *http.ServeMux
+	router *http.ServeMux
 	// email  EmailSender
 }
 
@@ -19,8 +19,13 @@ type Server struct {
 func NewServer() *Server {
 	return &Server{
 		DB:     database.NewCertsDB(),
-		Router: http.NewServeMux(),
+		router: http.NewServeMux(),
 	}
+}
+
+// Run server and listen
+func (s *Server) Run() error {
+	return http.ListenAndServe(":8888", s.router)
 }
 
 func (s *Server) handleCertificate() http.HandlerFunc {
@@ -83,9 +88,9 @@ func (s *Server) acceptCertificateTransfer() http.HandlerFunc {
 
 // Routes ...
 func (s *Server) Routes() {
-	s.Router.HandleFunc("/certificates/", s.handleCertificate())             // GET -> list all, POST -> create new
-	s.Router.HandleFunc("/users/{id}/certificates", s.getUserCertificates()) //.Methods("GET")
-	s.Router.HandleFunc("/certificates/{id}", s.handleOneCertificate())      //.Methods("PUT", "DELETE")
+	s.router.HandleFunc("/certificates/", s.handleCertificate())             // GET -> list all, POST -> create new
+	s.router.HandleFunc("/users/{id}/certificates", s.getUserCertificates()) //.Methods("GET")
+	s.router.HandleFunc("/certificates/{id}", s.handleOneCertificate())      //.Methods("PUT", "DELETE")
 	// s.router.HandleFunc("/certificates/{id}", s.deleteCertificate())         //.Methods("DELETE")
 	// s.router.HandleFunc("/certificates/", s.transferCertificate())       //.Methods("POST")
 	// s.router.HandleFunc("/certificates/", s.acceptCertificateTransfer()) //.Methods("PUT")

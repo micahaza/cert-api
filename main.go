@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
 	"time"
 
 	"github.com/micahaza/cert-api/app/database"
@@ -32,5 +32,7 @@ func main() {
 	}
 	d.DB.AddCert(cert2)
 
-	http.ListenAndServe(":8888", d.Router)
+	if err := d.Run(); err != nil {
+		fmt.Println(err.Error())
+	}
 }
