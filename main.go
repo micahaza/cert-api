@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/micahaza/cert-api/app/database"
@@ -9,7 +9,10 @@ import (
 )
 
 func main() {
-	cdb := database.NewCertsDB()
+
+	d := rest.NewServer()
+	d.Routes()
+
 	cert := database.Certificate{
 		ID:        "001",
 		Title:     "title",
@@ -18,33 +21,16 @@ func main() {
 		Year:      2018,
 		Note:      "No note yet",
 	}
-	cdb.AddCert(cert)
-
-	cert, err := cdb.Cert("001")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(cert)
-
-	upd := database.Certificate{
+	d.DB.AddCert(cert)
+	cert2 := database.Certificate{
 		ID:        "002",
-		Title:     "Changed title",
+		Title:     "title2",
 		CreatedAt: time.Now(),
-		Owner:     "user1",
-		Year:      2016,
-		Note:      "Something important",
+		Owner:     "user2",
+		Year:      2018,
+		Note:      "No note yet",
 	}
-	c, err := cdb.UpdateCert(upd)
-	if err != nil {
-		fmt.Println(c, err)
-	}
-	cert, err = cdb.Cert("001")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("updated", cert)
+	d.DB.AddCert(cert2)
 
-	d := rest.NewServer()
-	d.Routes()
-	fmt.Println(d)
+	http.ListenAndServe(":8888", d.Router)
 }

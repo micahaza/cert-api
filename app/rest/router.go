@@ -10,16 +10,16 @@ import (
 
 // Server ...
 type Server struct {
-	db     *database.CertsDB
-	router *http.ServeMux
+	DB     *database.CertsDB
+	Router *http.ServeMux
 	// email  EmailSender
 }
 
 // NewServer ...
 func NewServer() *Server {
 	return &Server{
-		db:     database.NewCertsDB(),
-		router: http.NewServeMux(),
+		DB:     database.NewCertsDB(),
+		Router: http.NewServeMux(),
 	}
 }
 
@@ -27,7 +27,7 @@ func (s *Server) handleCertificate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "GET": // list all certificates
-			allCerts, _ := s.db.AllCerts()
+			allCerts, _ := s.DB.AllCerts()
 			json.NewEncoder(w).Encode(allCerts)
 		case "POST": // create new certificate
 			fmt.Println("POST ...")
@@ -41,7 +41,7 @@ func (s *Server) handleOneCertificate() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "PUT": // update certificate
-			allCerts, _ := s.db.AllCerts()
+			allCerts, _ := s.DB.AllCerts()
 			json.NewEncoder(w).Encode(allCerts)
 		case "DELETE": // delete certificate
 			fmt.Println("POST ...")
@@ -83,9 +83,9 @@ func (s *Server) acceptCertificateTransfer() http.HandlerFunc {
 
 // Routes ...
 func (s *Server) Routes() {
-	s.router.HandleFunc("/certificates/", s.handleCertificate())             // GET -> list all, POST -> create new
-	s.router.HandleFunc("/users/{id}/certificates", s.getUserCertificates()) //.Methods("GET")
-	s.router.HandleFunc("/certificates/{id}", s.handleOneCertificate())      //.Methods("PUT", "DELETE")
+	s.Router.HandleFunc("/certificates/", s.handleCertificate())             // GET -> list all, POST -> create new
+	s.Router.HandleFunc("/users/{id}/certificates", s.getUserCertificates()) //.Methods("GET")
+	s.Router.HandleFunc("/certificates/{id}", s.handleOneCertificate())      //.Methods("PUT", "DELETE")
 	// s.router.HandleFunc("/certificates/{id}", s.deleteCertificate())         //.Methods("DELETE")
 	// s.router.HandleFunc("/certificates/", s.transferCertificate())       //.Methods("POST")
 	// s.router.HandleFunc("/certificates/", s.acceptCertificateTransfer()) //.Methods("PUT")
